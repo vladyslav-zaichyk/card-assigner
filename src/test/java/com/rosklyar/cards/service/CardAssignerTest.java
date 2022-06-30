@@ -35,24 +35,24 @@ public class CardAssignerTest {
 
     @Test(timeout = 2000L)
     public void shouldEmmitAllEvents() {
+        Album album = albumTestData();
+        final List<Card> allCards = album.sets.stream().map(set -> set.cards).flatMap(Collection::stream).collect(toList());
+
         final List<Event> emmitedEvents = new CopyOnWriteArrayList<>();
         eventService.subscribe(emmitedEvents::add, SET_FINISHED, ALBUM_FINISHED);
 
-        Album album = albumTestData();
         ExecutorService executorService = newFixedThreadPool(10);
-        final List<Card> allCards = album.sets.stream().map(set -> set.cards).flatMap(Collection::stream).collect(toList());
-
-
         while (!allUsersCompletedCollection(emmitedEvents, album)) {
-            executorService.submit(() -> {
-                Card card = allCards.get(nextInt(0, allCards.size()));
-                Long userId = users.get(nextInt(0, users.size())).getId();
-                cardAssigner.assignCard(userId, card.id);
-            });
+            executorService.submit(() ->
+                    cardAssigner.assignCard(getRandomItem(users).getId(), getRandomItem(allCards).id));
         }
 
         assert emmitedEvents.stream().filter(event -> event.type == ALBUM_FINISHED).count() == users.size();
         assert emmitedEvents.stream().filter(event -> event.type == SET_FINISHED).count() == (long) users.size() * album.sets.size();
+    }
+
+    private <T> T getRandomItem(List<T> item) {
+        return item.get(nextInt(0, item.size()));
     }
 
     private boolean allUsersCompletedCollection(List<Event> events, Album album) {
