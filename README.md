@@ -1,6 +1,6 @@
 Task: implement com.rosklyar.cards.service.ThreadSafeCardAssigner or design own component
 
-__My implementation__: ThreadSafeCardAssigner__
+__My implementation: ThreadSafeCardAssigner__
 
 
 
