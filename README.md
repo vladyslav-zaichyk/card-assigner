@@ -1,4 +1,4 @@
-Task: implement com.rosklyar.cards.service.DefaultCardAssigner or design own component
+Task: implement com.rosklyar.cards.service.ConcurrentCardAssigner or design own component
 
 Service that assigns a card to the user.
 
