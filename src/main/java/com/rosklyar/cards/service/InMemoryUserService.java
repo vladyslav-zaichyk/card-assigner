@@ -22,11 +22,6 @@ public class InMemoryUserService implements UserService {
     }
 
     @Override
-    public void add(User user) {
-        users.add(user);
-    }
-
-    @Override
     public void addCard(User user, Card card) {
         user.getCards().add(card);
     }

@@ -1,4 +1,5 @@
-Task: implement com.rosklyar.cards.service.ConcurrentCardAssigner or design own component
+Task: implement com.rosklyar.cards.service.ThreadSafeCardAssigner or design own component
+My component: ThreadSafeCardAssigner
 
 Service that assigns a card to the user.
 

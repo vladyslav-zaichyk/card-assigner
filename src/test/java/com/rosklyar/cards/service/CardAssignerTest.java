@@ -29,22 +29,21 @@ public class CardAssignerTest {
 
     private final UserService userService = new InMemoryUserService(users);
     private final CardService cardService = new InMemoryCardService(Set.of(albumTestData()));
-    private final EventService eventService = new ConcurrentEventservice();
-    private final CardAssigner cardAssigner = new ConcurrentCardAssigner(userService, cardService, eventService);
+    private final EventService eventService = new ThreadSafeEventService();
+    private final CardAssigner cardAssigner = new ThreadSafeCardAssigner(userService, cardService, eventService);
 
 
-    @Test(timeout = 2000000L)
-    public void assigningCardsToUsers() {
-        final List<Event> events = new CopyOnWriteArrayList<>();
-        eventService.subscribe(ALBUM_FINISHED, events::add);
-        eventService.subscribe(SET_FINISHED, events::add);
+    @Test(timeout = 2000L)
+    public void shouldEmmitAllEvents() {
+        final List<Event> emmitedEvents = new CopyOnWriteArrayList<>();
+        eventService.subscribe(emmitedEvents::add, SET_FINISHED, ALBUM_FINISHED);
 
         Album album = albumTestData();
         ExecutorService executorService = newFixedThreadPool(10);
         final List<Card> allCards = album.sets.stream().map(set -> set.cards).flatMap(Collection::stream).collect(toList());
 
 
-        while (!albumsFinished(events, album)) {
+        while (!allUsersCompletedCollection(emmitedEvents, album)) {
             executorService.submit(() -> {
                 Card card = allCards.get(nextInt(0, allCards.size()));
                 Long userId = users.get(nextInt(0, users.size())).getId();
@@ -52,11 +51,11 @@ public class CardAssignerTest {
             });
         }
 
-        assert events.stream().filter(event -> event.type == ALBUM_FINISHED).count() == users.size();
-        assert events.stream().filter(event -> event.type == SET_FINISHED).count() == (long) users.size() * album.sets.size();
+        assert emmitedEvents.stream().filter(event -> event.type == ALBUM_FINISHED).count() == users.size();
+        assert emmitedEvents.stream().filter(event -> event.type == SET_FINISHED).count() == (long) users.size() * album.sets.size();
     }
 
-    private boolean albumsFinished(List<Event> events, Album album) {
+    private boolean allUsersCompletedCollection(List<Event> events, Album album) {
         return events.size() == users.size() + users.size() * album.sets.size();
     }
 

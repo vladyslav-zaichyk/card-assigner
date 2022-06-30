@@ -7,13 +7,13 @@ import com.rosklyar.cards.domain.Card;
 import java.util.Collection;
 
 public interface CardService {
-    public Card get(Long id);
+    Card get(Long id);
 
-    public AlbumSet getParentAlbumSet(Card card);
+    AlbumSet getParentAlbumSet(Card card);
 
-    public Album getParentAlbum(AlbumSet albumSet);
+    Album getParentAlbum(AlbumSet albumSet);
 
-    public boolean isAlbumSetComplete(Collection<Card> cards, AlbumSet albumSet);
+    boolean isAlbumSetComplete(Collection<Card> cards, AlbumSet albumSet);
 
-    public boolean isAlbumComplete(Collection<AlbumSet> cards, Album album);
+    boolean isAlbumComplete(Collection<AlbumSet> cards, Album album);
 }

@@ -4,7 +4,7 @@ import com.rosklyar.cards.domain.Event;
 import com.rosklyar.cards.util.EventListener;
 
 public interface EventService {
-    void subscribe(Event.Type eventType, EventListener listener);
+    void subscribe(EventListener listener, Event.Type... eventType);
 
     void notify(Event event);
 }

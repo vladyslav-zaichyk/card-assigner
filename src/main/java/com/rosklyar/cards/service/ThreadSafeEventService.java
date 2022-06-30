@@ -5,13 +5,15 @@ import com.google.common.collect.Multimap;
 import com.rosklyar.cards.domain.Event;
 import com.rosklyar.cards.util.EventListener;
 
-public class ConcurrentEventservice implements EventService {
+import java.util.Arrays;
+
+public class ThreadSafeEventService implements EventService {
     private final Multimap<Event.Type, EventListener> listeners = ArrayListMultimap.create();
 
     @Override
-    public void subscribe(Event.Type eventType, EventListener listener) {
+    public void subscribe(EventListener listener, Event.Type... eventTypes) {
         synchronized (listeners) {
-            listeners.put(eventType, listener);
+            Arrays.stream(eventTypes).forEach(eventType -> listeners.put(eventType, listener));
         }
     }
 

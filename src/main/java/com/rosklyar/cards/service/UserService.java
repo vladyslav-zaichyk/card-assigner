@@ -8,21 +8,19 @@ import com.rosklyar.cards.domain.User;
 import java.util.Collection;
 
 public interface UserService {
-    public User get(Long id);
+    User get(Long id);
 
-    public void add(User user);
+    void addCard(User user, Card card);
 
-    public void addCard(User user, Card card);
+    Collection<Card> getCollectedCards(User user);
 
-    public Collection<Card> getCollectedCards(User user);
+    Collection<AlbumSet> getCollectedAlbumSets(User user);
 
-    public Collection<AlbumSet> getCollectedAlbumSets(User user);
+    void completeSet(User user, AlbumSet albumSet);
 
-    public void completeSet(User user, AlbumSet albumSet);
+    void completeAlbum(User user, Album album);
 
-    public void completeAlbum(User user, Album album);
+    boolean isCompletedAlbumSet(User user, AlbumSet albumSet);
 
-    public boolean isCompletedAlbumSet(User user, AlbumSet albumSet);
-
-    public boolean isCompletedAlbum(User user, Album album);
+    boolean isCompletedAlbum(User user, Album album);
 }

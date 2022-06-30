@@ -2,7 +2,6 @@ package com.rosklyar.cards.service;
 
 import com.rosklyar.cards.domain.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +14,8 @@ import static com.rosklyar.cards.domain.Event.Type.SET_FINISHED;
  */
 
 @RequiredArgsConstructor
-public class ConcurrentCardAssigner implements CardAssigner {
-    private static final Logger logger = LoggerFactory.getLogger(ConcurrentCardAssigner.class);
+public class ThreadSafeCardAssigner implements CardAssigner {
+    private static final Logger logger = LoggerFactory.getLogger(ThreadSafeCardAssigner.class);
 
     private final UserService userService;
     private final CardService cardService;

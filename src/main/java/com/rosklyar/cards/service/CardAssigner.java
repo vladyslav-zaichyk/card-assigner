@@ -1,9 +1,5 @@
 package com.rosklyar.cards.service;
 
-import com.rosklyar.cards.domain.Event;
-
-import java.util.function.Consumer;
-
 /**
  * Created by rostyslavs on 11/21/2015.
  */
